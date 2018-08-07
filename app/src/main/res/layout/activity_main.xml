@@ -127,9 +127,10 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/spacing_large" />
 
-                <android.support.constraint.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_margin="@dimen/spacing_large">
 
                     <TextView
@@ -137,12 +138,58 @@
                         android:layout_height="wrap_content"
                         android:text="문성욱 님의 맞춤복지"
                         android:layout_marginStart="10dp"
-                        android:textColor="@color/deep_orange_400"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"/>
+                        android:textColor="@color/deep_orange_400"/>
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/chart1"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/category_edu"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="교육"
+                                android:gravity="center"/>
+                        </LinearLayout>
 
 
-                </android.support.constraint.ConstraintLayout>
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:src="@drawable/category_edu"/>
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:src="@drawable/category_edu"/>
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:src="@drawable/category_edu"/>
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="0dp"
