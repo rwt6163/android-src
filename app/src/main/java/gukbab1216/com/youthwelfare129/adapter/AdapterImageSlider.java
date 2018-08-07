@@ -2,6 +2,7 @@ package gukbab1216.com.youthwelfare129.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -34,7 +35,7 @@ public class AdapterImageSlider extends PagerAdapter {
     }
 
     // constructor
-    private AdapterImageSlider(Activity activity, List<Image> items) {
+    public AdapterImageSlider(Activity activity, List<Image> items) {
         this.act = activity;
         this.items = items;
     }
@@ -55,7 +56,7 @@ public class AdapterImageSlider extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((RelativeLayout) object);
+        return view == ((ConstraintLayout) object);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class AdapterImageSlider extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        ((ViewPager) container).removeView((RelativeLayout) object);
+        ((ViewPager) container).removeView((ConstraintLayout) object);
 
     }
 }

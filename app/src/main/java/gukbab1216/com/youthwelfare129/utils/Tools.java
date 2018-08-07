@@ -27,7 +27,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,7 +95,7 @@ public class Tools {
 
     public static void displayImageRound(final Context ctx, final ImageView img, @DrawableRes int drawable) {
         try {
-            Glide.with(ctx).load(drawable).asBitmap().centerCrop().into(new BitmapImageViewTarget(img) {
+            Glide.with(ctx).asBitmap().load(drawable).into(new BitmapImageViewTarget(img) { //How to apply centercrop
                 @Override
                 protected void setResource(Bitmap resource) {
                     RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(ctx.getResources(), resource);
@@ -107,8 +110,7 @@ public class Tools {
     public static void displayImageOriginal(Context ctx, ImageView img, String url) {
         try {
             Glide.with(ctx).load(url)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .transition(new DrawableTransitionOptions().crossFade())
                     .into(img);
         } catch (Exception e) {
         }
