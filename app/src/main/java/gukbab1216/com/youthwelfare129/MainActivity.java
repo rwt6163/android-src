@@ -1,10 +1,16 @@
 package gukbab1216.com.youthwelfare129;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -40,9 +47,54 @@ import java.util.List;
 
 import gukbab1216.com.youthwelfare129.adapter.AdapterImageSlider;
 import gukbab1216.com.youthwelfare129.adapter.CategoryGridViewAdapter;
+import gukbab1216.com.youthwelfare129.databinding.ActivityMainBinding;
 import gukbab1216.com.youthwelfare129.model.Image;
 
-public class MainActivity extends AppCompatActivity implements OnChartValueSelectedListener {
+public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getName();
+
+    private ActivityMainBinding mBinding;
+    private ActionBar mActionBar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        initToolbar();
+        initNavigationMenu();
+    }
+
+    private void initToolbar() {
+        setSupportActionBar(mBinding.toolbar);
+        mActionBar = getSupportActionBar();
+        assert mActionBar != null;
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setTitle(getString(R.string.app_name));
+    }
+
+    private void initNavigationMenu() {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mBinding.drawerLayout,
+                mBinding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        mBinding.drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        mBinding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(final MenuItem item) {
+                Toast.makeText(getApplicationContext(), item.getTitle() + " Selected", Toast.LENGTH_SHORT).show();
+                mActionBar.setTitle(item.getTitle());
+                mBinding.drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+    }
+/*
+    private ActivityMainBinding mBinding;
 
     private View parent_view;
     private ViewPager viewPager;
@@ -86,9 +138,55 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             "Side Park",
     };
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        initToolbar();
+        initComponent();
+        initChart();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (runnable != null) handler.removeCallbacks(runnable);
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //getMenuInflater().inflate(R.menu.menu_setting, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == android.R.id.home) {
+//            finish();
+//        } else {
+//            Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+//        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+
+        if (e == null)
+            return;
+        Log.i("VAL SELECTED",
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
+    }
+
+    @Override
+    public void onNothingSelected() {
+        Log.i("PieChart", "nothing selected");
+    }
+
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        mBinding.toolbar.setNavigationIcon(R.drawable.ic_menu);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.app_name));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -339,52 +437,5 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             }
         };
         handler.postDelayed(runnable, 3000);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_main);
-
-        initToolbar();
-        initComponent();
-        initChart();
-    }
-
-    @Override
-    public void onDestroy() {
-        if (runnable != null) handler.removeCallbacks(runnable);
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_setting, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == android.R.id.home) {
-//            finish();
-//        } else {
-//            Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
-//        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
-
-        if (e == null)
-            return;
-        Log.i("VAL SELECTED",
-                "Value: " + e.getY() + ", xIndex: " + e.getX()
-                        + ", DataSet index: " + h.getDataSetIndex());
-    }
-
-    @Override
-    public void onNothingSelected() {
-        Log.i("PieChart", "nothing selected");
-    }
+    }*/
 }

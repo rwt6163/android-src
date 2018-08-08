@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">YouthWelfare129</string>
 
+    <string name="drawer_header_profile_img">Profile Logo</string>
+    <string name="drawer_header_profile_background">Profile Background</string>
+    <string name="drawer_header_profile_username">Profile Username</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
