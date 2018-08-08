@@ -49,12 +49,21 @@ import gukbab1216.com.youthwelfare129.adapter.AdapterImageSlider;
 import gukbab1216.com.youthwelfare129.adapter.CategoryGridViewAdapter;
 import gukbab1216.com.youthwelfare129.databinding.ActivityMainBinding;
 import gukbab1216.com.youthwelfare129.model.Image;
+import gukbab1216.com.youthwelfare129.utils.TmpDatas;
+
+import static gukbab1216.com.youthwelfare129.utils.TmpDatas.array_brief_place;
+import static gukbab1216.com.youthwelfare129.utils.TmpDatas.array_image_place;
+import static gukbab1216.com.youthwelfare129.utils.TmpDatas.array_title_place;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
 
     private ActivityMainBinding mBinding;
     private ActionBar mActionBar;
+
+    private AdapterImageSlider mAdapterImageSlider;
+    private Runnable mRunnable = null;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
 
         initToolbar();
         initNavigationMenu();
+        initBanner();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mRunnable != null) mHandler.removeCallbacks(mRunnable);
+        super.onDestroy();
     }
 
     private void initToolbar() {
@@ -93,6 +109,77 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void initBanner() {
+        mAdapterImageSlider = new AdapterImageSlider(this, new ArrayList<Image>());
+
+        final List<Image> items = new ArrayList<>();
+        for (int i = 0; i < TmpDatas.array_image_place.length; i++) {
+            Image obj = new Image();
+            obj.image = array_image_place[i];
+            obj.imageDrw = getResources().getDrawable(obj.image);
+            obj.name = array_title_place[i];
+            obj.brief = array_brief_place[i];
+            items.add(obj);
+        }
+
+        mAdapterImageSlider.setItems(items);
+        mBinding.drawerContent.pager.setAdapter(mAdapterImageSlider);
+
+        // displaying selected image first
+        mBinding.drawerContent.pager.setCurrentItem(0);
+        addBottomDots(mBinding.drawerContent.layoutDots, mAdapterImageSlider.getCount(), 0);
+        mBinding.drawerContent.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int pos, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int pos) {
+                addBottomDots(mBinding.drawerContent.layoutDots, mAdapterImageSlider.getCount(), pos);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        startAutoSlider(mAdapterImageSlider.getCount());
+    }
+
+    private void addBottomDots(LinearLayout layout_dots, int size, int current) {
+        ImageView[] dots = new ImageView[size];
+
+        layout_dots.removeAllViews();
+        for (int i = 0; i < dots.length; i++) {
+            dots[i] = new ImageView(this);
+            int width_height = 15;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(width_height, width_height));
+            params.setMargins(10, 10, 10, 10);
+            dots[i].setLayoutParams(params);
+            dots[i].setImageResource(R.drawable.shape_circle_outline);
+            layout_dots.addView(dots[i]);
+        }
+
+        if (dots.length > 0) {
+            dots[current].setImageResource(R.drawable.shape_circle);
+        }
+    }
+
+    private void startAutoSlider(final int count) {
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                int pos = mBinding.drawerContent.pager.getCurrentItem();
+                pos = pos + 1;
+                if (pos >= count) pos = 0;
+                mBinding.drawerContent.pager.setCurrentItem(pos);
+                mHandler.postDelayed(mRunnable, 3000);
+            }
+        };
+        mHandler.postDelayed(mRunnable, 3000);
+    }
+
 /*
     private ActivityMainBinding mBinding;
 
@@ -105,38 +192,6 @@ public class MainActivity extends AppCompatActivity {
     private PieChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-
-
-    private static int[] array_image_place = {
-            R.drawable.banner_gukga_scholarship,
-            R.drawable.banner_gukga_scholarship,
-            R.drawable.banner_gukga_scholarship,
-            R.drawable.banner_gukga_scholarship,
-            R.drawable.banner_gukga_scholarship,
-    };
-
-    protected String[] mParties = new String[] {
-            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
-            "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
-            "Party Q", "Party R", "Party S", "Party T", "Party U", "Party V", "Party W", "Party X",
-            "Party Y", "Party Z"
-    };
-
-    private static String[] array_title_place = {
-            "Dui fringilla ornare finibus, orci odio",
-            "Mauris sagittis non elit quis fermentum",
-            "Mauris ultricies augue sit amet est sollicitudin",
-            "Suspendisse ornare est ac auctor pulvinar",
-            "Vivamus laoreet aliquam ipsum eget pretium",
-    };
-
-    private static String[] array_brief_place = {
-            "Foggy Hill",
-            "The Backpacker",
-            "River Forest",
-            "Mist Mountain",
-            "Side Park",
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -406,36 +461,5 @@ public class MainActivity extends AppCompatActivity {
         return s;
     }
 
-    private void addBottomDots(LinearLayout layout_dots, int size, int current) {
-        ImageView[] dots = new ImageView[size];
-
-        layout_dots.removeAllViews();
-        for (int i = 0; i < dots.length; i++) {
-            dots[i] = new ImageView(this);
-            int width_height = 15;
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(width_height, width_height));
-            params.setMargins(10, 10, 10, 10);
-            dots[i].setLayoutParams(params);
-            dots[i].setImageResource(R.drawable.shape_circle_outline);
-            layout_dots.addView(dots[i]);
-        }
-
-        if (dots.length > 0) {
-            dots[current].setImageResource(R.drawable.shape_circle);
-        }
-    }
-
-    private void startAutoSlider(final int count) {
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                int pos = viewPager.getCurrentItem();
-                pos = pos + 1;
-                if (pos >= count) pos = 0;
-                viewPager.setCurrentItem(pos);
-                handler.postDelayed(runnable, 3000);
-            }
-        };
-        handler.postDelayed(runnable, 3000);
-    }*/
+*/
 }
