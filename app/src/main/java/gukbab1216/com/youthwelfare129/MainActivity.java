@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         initNavigationMenu();
         initBanner();
+        initCategory();
     }
 
     @Override
@@ -178,6 +179,66 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         mHandler.postDelayed(mRunnable, 3000);
+    }
+
+    private void initCategory() {
+//
+//        //GridView Start
+//        GridView categoryGridView = findViewById(R.id.category_grid_view_image_text);
+//
+//        ArrayList<String> getStringList;
+//        ArrayList<Integer> getIntList;
+//
+//        getStringList = new ArrayList<>();
+//        getIntList = new ArrayList<>();
+//
+//        getStringList.add("구인구직");
+//        getStringList.add("청년모임지원");
+//        getStringList.add("학자금지원");
+//        getStringList.add("가족관계");
+//        getStringList.add("건강복지");
+//        getStringList.add("공공지역");
+//        getStringList.add("교육복지");
+//        getStringList.add("노인복지");
+//        getStringList.add("법률및권익보장");
+//        getStringList.add("임신,출산복지");
+//        getStringList.add("장애인복지");
+//        getStringList.add("재테크");
+//
+//        getIntList.add(R.drawable.category_employ);
+//        getIntList.add(R.drawable.category_community);
+//        getIntList.add(R.drawable.category_studentloan);
+//        getIntList.add(R.drawable.category_family);
+//        getIntList.add(R.drawable.category_health);
+//        getIntList.add(R.drawable.category_public);
+//        getIntList.add(R.drawable.category_edu);
+//        getIntList.add(R.drawable.category_oldage);
+//        getIntList.add(R.drawable.category_law);
+//        getIntList.add(R.drawable.category_parenting);
+//        getIntList.add(R.drawable.category_disabled);
+//        getIntList.add(R.drawable.category_investing);
+//
+//        String[] gridViewString;
+//        int[] gridViewImageId;
+//
+//        gridViewString = new String[getStringList.size()];
+//        gridViewImageId = new int[getStringList.size()];
+//
+//        for (int i = 0; i < getStringList.size(); i++) {
+//            gridViewString[i] = getStringList.get(i);
+//            gridViewImageId[i] = getIntList.get(i);
+//        }
+//
+//        CategoryGridViewAdapter categoryGridViewAdapter;
+//
+//        categoryGridViewAdapter = new CategoryGridViewAdapter(getApplicationContext(), gridViewString, gridViewImageId);
+//        categoryGridView.setAdapter(categoryGridViewAdapter);
+//
+//        categoryGridView.setOnItemClickListener((adapterView, view1, i, l) -> {
+//            Intent intent = new Intent(getApplicationContext(), WelfareListActivity.class);
+//            System.out.println(gridViewString[i]);
+//            startActivity(intent);
+//        });
     }
 
 /*

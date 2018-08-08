@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">청년복지129</string>
+
+    <string name="category_community">모임</string>
+    <string name="category_edu">교육</string>
+    <string name="category_employ">취업</string>
+    <string name="category_health">보건</string>
+    <string name="category_finance">재정</string>
+    <string name="category_housing">주거</string>
+    <string name="category_public">공공</string>
+    <string name="category_family">가족</string>
+
+    <string name="chatbot_hint">복지정보를 검색해보세요!!</string>
+    <string name="image_search">검색 이미지</string>
 </resources>

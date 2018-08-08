@@ -31,18 +31,10 @@
             android:layout_height="match_parent"
             tools:openDrawer="start">
 
-            <android.support.design.widget.CoordinatorLayout
-                android:id="@+id/main_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <!-- dummy content list of new -->
-                <include
-                    android:id="@+id/drawer_content"
-                    layout="@layout/include_drawer_content" />
-
-            </android.support.design.widget.CoordinatorLayout>
-
+            <!-- dummy content list of new -->
+            <include
+                android:id="@+id/drawer_content"
+                layout="@layout/include_drawer_content" />
 
             <!--navigation drawer menu-->
             <android.support.design.widget.NavigationView
