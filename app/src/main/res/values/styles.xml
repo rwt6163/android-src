@@ -27,4 +27,8 @@
         <item name="mrl_rippleColor">#80000000</item>
     </style>
 
+    <style name="ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:displayOptions">homeAsUp</item>
+    </style>
+
 </resources>

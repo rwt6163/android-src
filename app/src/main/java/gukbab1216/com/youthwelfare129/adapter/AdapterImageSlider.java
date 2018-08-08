@@ -84,7 +84,7 @@ public class AdapterImageSlider extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        ((ViewPager) container).removeView((ConstraintLayout) object);
+        container.removeView((ConstraintLayout) object);
 
     }
 }
