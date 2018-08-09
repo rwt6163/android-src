@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -75,6 +76,16 @@ public class MainActivity extends AppCompatActivity {
     private Runnable mRunnable = null;
     private Handler mHandler = new Handler();
 
+    private Typeface mTfLight;
+    private Typeface mTfRegular;
+
+    protected String[] mParties = new String[] {
+            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
+            "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
+            "Party Q", "Party R", "Party S", "Party T", "Party U", "Party V", "Party W", "Party X",
+            "Party Y", "Party Z"
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         initBanner();
         initCategory();
         initWelfareRankingList();
+        initPieChart();
     }
 
     @Override
@@ -194,8 +206,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initWelfareRankingList() {
-        mBinding.drawerContent.searchRankRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mBinding.drawerContent.searchRankRecyclerView.setHasFixedSize(true);
+        mBinding.drawerContent.rankingRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.drawerContent.rankingRecyclerview.setHasFixedSize(true);
+        ViewCompat.setNestedScrollingEnabled(mBinding.drawerContent.rankingRecyclerview, false);
 
         mItems = DataGenerator.getWelfareData(this);
         mItems.addAll(DataGenerator.getWelfareData(this));
@@ -205,8 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
         //set data and list adapter
         mAdapterListAnimation = new AdapterListAnimation(this, mItems, mAnimationType);
-        mBinding.drawerContent.searchRankRecyclerView.setAdapter(mAdapterListAnimation);
-
+        mBinding.drawerContent.rankingRecyclerview.setAdapter(mAdapterListAnimation);
         // on item list clicked
         mAdapterListAnimation.setOnItemClickListener(new AdapterListAnimation.OnItemClickListener() {
             @Override
@@ -214,6 +226,145 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(mParentView, "Item " + obj.title + " clicked", Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void initPieChart() {
+        mBinding.drawerContent.pieChart.setUsePercentValues(true);
+        mBinding.drawerContent.pieChart.getDescription();
+        mBinding.drawerContent.pieChart.setExtraOffsets(5, 10, 5, 5);
+        mBinding.drawerContent.pieChart.setDragDecelerationFrictionCoef(0.95f);
+
+        mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
+        mBinding.drawerContent.pieChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+        mBinding.drawerContent.pieChart.setCenterText(generateCenterSpannableText());
+
+        mBinding.drawerContent.pieChart.setExtraOffsets(20.f, 0.f, 20.f, 0.f);
+        mBinding.drawerContent.pieChart.setDrawHoleEnabled(true);
+        mBinding.drawerContent.pieChart.setHoleColor(Color.WHITE);
+        mBinding.drawerContent.pieChart.setTransparentCircleColor(Color.WHITE);
+        mBinding.drawerContent.pieChart.setTransparentCircleAlpha(110);
+        mBinding.drawerContent.pieChart.setHoleRadius(58f);
+        mBinding.drawerContent.pieChart.setTransparentCircleRadius(61f);
+        mBinding.drawerContent.pieChart.setDrawCenterText(true);
+        mBinding.drawerContent.pieChart.setRotationAngle(0);
+
+        // enable rotation of the chart by touch
+        mBinding.drawerContent.pieChart.setRotationEnabled(true);
+        mBinding.drawerContent.pieChart.setHighlightPerTapEnabled(true);
+
+        // mChart.setUnit(" €");
+        // mChart.setDrawUnitsInChart(true);
+
+        // add a selection listener
+        mBinding.drawerContent.pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                if (e == null)
+                    return;
+                Log.i("VAL SELECTED",
+                        "Value: " + e.getY() + ", xIndex: " + e.getX()
+                                + ", DataSet index: " + h.getDataSetIndex());
+            }
+
+            @Override
+            public void onNothingSelected() {
+                Log.i("PieChart", "nothing selected");
+            }
+        });
+
+        setData(4, 100);
+
+        mBinding.drawerContent.pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        // mChart.spin(2000, 0, 360);
+
+        Legend l = mBinding.drawerContent.pieChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);
+        l.setEnabled(false);
+
+        // entry label styling
+        mBinding.drawerContent.pieChart.setEntryLabelColor(Color.WHITE);
+        mBinding.drawerContent.pieChart.setEntryLabelTypeface(mTfRegular);
+        mBinding.drawerContent.pieChart.setEntryLabelTextSize(12f);
+    }
+
+    private SpannableString generateCenterSpannableText() {
+        SpannableString s = new SpannableString("MPAndroidChart\ndeveloped by Philipp Jahoda");
+        s.setSpan(new RelativeSizeSpan(1.5f), 0, 14, 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
+        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
+        s.setSpan(new RelativeSizeSpan(.65f), 14, s.length() - 15, 0);
+        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
+        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);
+        return s;
+    }
+
+    private void setData(int count, float range) {
+
+        float mult = range;
+
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        for (int i = 0; i < count; i++) {
+            entries.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mParties[i % mParties.length]));
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        dataSet.setColors(colors);
+        //dataSet.setSelectionShift(0f);
+
+
+        dataSet.setValueLinePart1OffsetPercentage(80.f);
+        dataSet.setValueLinePart1Length(0.2f);
+        dataSet.setValueLinePart2Length(0.4f);
+        //dataSet.setUsingSliceColorAsValueLineColor(true);
+
+        //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.BLACK);
+        data.setValueTypeface(mTfRegular);
+        mBinding.drawerContent.pieChart.setData(data);
+
+        // undo all highlights
+        mBinding.drawerContent.pieChart.highlightValues(null);
+
+        mBinding.drawerContent.pieChart.invalidate();
     }
 
     private void initCategory() {

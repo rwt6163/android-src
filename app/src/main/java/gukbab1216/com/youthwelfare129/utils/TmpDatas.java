@@ -4,11 +4,11 @@ import gukbab1216.com.youthwelfare129.R;
 
 public class TmpDatas {
     public static int[] array_image_place = {
-            R.drawable.banner_gukga_scholarship,
-            R.drawable.banner_gukga_scholarship,
-            R.drawable.banner_gukga_scholarship,
-            R.drawable.banner_gukga_scholarship,
-            R.drawable.banner_gukga_scholarship,
+            R.drawable.gukgascholarship_banner,
+            R.drawable.gukgascholarship_banner,
+            R.drawable.gukgascholarship_banner,
+            R.drawable.gukgascholarship_banner,
+            R.drawable.gukgascholarship_banner,
     };
 
     public static String[] mParties = new String[] {

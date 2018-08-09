@@ -1,6 +1,7 @@
 package gukbab1216.com.youthwelfare129.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ public class AdapterListAnimation extends RecyclerView.Adapter<RecyclerView.View
         public TextView name;
         public View lyt_parent;
 
-        public OriginalViewHolder(View v) {
+        private OriginalViewHolder(View v) {
             super(v);
             image = (ImageView) v.findViewById(R.id.image);
             name = (TextView) v.findViewById(R.id.name);
@@ -52,6 +53,7 @@ public class AdapterListAnimation extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
@@ -62,7 +64,7 @@ public class AdapterListAnimation extends RecyclerView.Adapter<RecyclerView.View
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         Log.e("onBindViewHolder", "onBindViewHolder : " + position);
         if (holder instanceof OriginalViewHolder) {
             OriginalViewHolder view = (OriginalViewHolder) holder;
@@ -84,7 +86,7 @@ public class AdapterListAnimation extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -97,7 +99,7 @@ public class AdapterListAnimation extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return 5;
     }
 
     private int lastPosition = -1;
